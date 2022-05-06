@@ -38,24 +38,49 @@ https://dao.joystream.org/#/working-groups/distribution
 
 ### Costs
 
-| Member | Bucket | Worker | Location | Size TB | USD / mon |
-|---|---|----|---|---|---|
-| @l1dev | 0:0 | 0 | Helsinki | 2 | 75 |
-| @l1dev | 1:1 | 0 | Nuremberg | .2 | 32 |
-| @l1dev | 12:0 | 0 | Montreal | .15 | 24 |
-| @l1dev | 0:0 | 0 | Sydney | .16 | 20 |
-| @cooloNe | 10:0 | 1 | Los Angeles | 0.8 | 84 |
-| @cooloNe | 4:0| 1 | Singapore | 0.8 | 225 |
-| @Ilich | 3:0 | 2 | Novosibirsk | 0.3 | 44 |
-| @AlexZNet | 6:0 | 3 | Johannesburg | 0.1 | 60 |
-| @xJames |  9:0 | 4 | Sao Paolo | 0.75 | 177 |
-| @Lelik_maxi |  0:1 | 5 | Helsinki | 1.4 | 57 |
-| @lkskrn |  2:0 | 6 | Moscow | 0.3 | 51 |
-| @yasir | 1:0 | 7 | Nuremberg | 0.4 | 35 |
-| @spat_sochi |  9:1 | 8 | Bogota | 0.1 | 69 |
-| @MikeShipa | 0:2 | 9 | Helsinki | 0.48 | 50 |
-| @MikeShipa | 2:1 | 9 | Moscow | 3.5 | 96 |
-| **Total** | | | | | 1200 (300/w) |
+To be added
+
+## Config
+> Get a ("censored") version of each distributors config.yml file, share them, and propose/require changes.
+
+```
+id: test-node # change to: `<countryCode>-<familyId>-<bucketIndex>-<memberID>-<handle>` for example *ca-3-0-515-l1dev* (need to be unique to identify test results)
+endpoints:
+  queryNode: http://localhost:8081/graphql  # should use QN from your localhost
+  joystreamNodeWs: ws://localhost:9944         # should use endpoint on the localhost
+directories:
+  assets: ./local/data                                       # can be any directory or mountpoint, see role guide
+  cacheState: ./local/cache                                  # ^
+logs:
+  file:
+    level: debug                              # you can set higher level to reduce output if needed
+    path: ./local/logs                       # path to logs location
+    maxFiles: 30 # 1 log file for 30 days or 30 * 50 MB
+    maxSize: 50485760 # 50 MB - max log file size
+  console:
+    level: verbose                           # adjust to your needs for testing, should run as system service with log file during production (see guide).
+  # elasti
+  #   level: info
+  #   endpoint: http://localhost:9200/       
+limits:
+  storage: 100G				     # !IMPORTANT - adjust it to the size of your hard drive. Leave some space for OS and logs and this is the value for the distributor payload
+  maxConcurrentStorageNodeDownloads: 100     #  also understand in detail: https://github.com/Joystream/joystream/blob/master/distributor-node/docs/node/index.md#caching
+  maxConcurrentOutboundConnections: 300
+  outboundRequestsTimeoutMs: 5000
+  pendingDownloadTimeoutSec: 3600
+  maxCachedItemSize: 1G
+intervals:
+  saveCacheState: 60
+  checkStorageNodeResponseTimes: 60
+  cacheCleanup: 60
+publicApi:
+  port: 3334
+operatorApi:
+  port: 3335
+  hmacSecret: some-random-value
+keys:
+workerId: 0                                  # Ask lead for this value
+```
 
 ## Setup
 
